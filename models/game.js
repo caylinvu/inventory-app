@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const GameSchema = new Schema({
-  title: {type: String, required: true, maxLength: 100},
+  title: {type: String, required: true},
   description: {type: String, required: true},
   category: [{type: Schema.Types.ObjectId, ref: 'Category'}],
   price: {type: Schema.Types.Decimal128, required: true},

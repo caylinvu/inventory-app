@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+
+  h1 #{game.title}
+
+  p #{game.description}
+  p #[strong Category:] 
+    each category, index in game.category 
+      a(href=category.url) #{category.name}
+      if index < game.category.length - 1
+        |, 
+  p #[strong Price:] $#{game.price}
+  p #[strong Quantity:] #{game.quantity}

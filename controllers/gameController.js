@@ -1,6 +1,7 @@
 const Game = require("../models/game");
 const Category = require("../models/category");
 const asyncHandler = require("express-async-handler");
+const { body, validationResult } = require("express-validator");
 
 // Display home page
 exports.index = asyncHandler(async (req, res, next) => {

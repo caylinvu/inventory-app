@@ -4,7 +4,16 @@ const asyncHandler = require("express-async-handler");
 
 // Display home page
 exports.index = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Site Home Page");
+  const [gameCount, categoryCount] = await Promise.all([
+    Game.countDocuments({}).exec(),
+    Category.countDocuments({}).exec(),
+  ]);
+
+  res.render("index", {
+    title: "Game Inventory Home",
+    game_count: gameCount,
+    category_count: categoryCount,
+  });
 });
 
 // Display list of all Games

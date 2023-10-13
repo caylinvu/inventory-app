@@ -39,11 +39,11 @@ exports.category_create_get = (req, res, next) => {
 
 // Handle Category create on POST
 exports.category_create_post = [
-  body("name", "Category name must not be empty")
+  body("name", "Category name required")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("description", "Description must not be empty")
+  body("description", "Description required")
     .trim()
     .isLength({ min: 1 })
     .escape(),

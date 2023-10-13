@@ -18,7 +18,14 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 // Display list of all Games
 exports.game_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game list");
+  const allGames = await Game.find({}, "title")
+    .sort({ title: 1 })
+    .exec();
+
+  res.render("game_list", {
+    title: "Game List",
+    game_list: allGames,
+  });
 });
 
 // Display detail page for a specific Game

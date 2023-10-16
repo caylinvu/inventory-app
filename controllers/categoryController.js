@@ -97,7 +97,22 @@ exports.category_delete_get = asyncHandler(async (req, res, next) => {
 
 // Handle Category delete on POST
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Category delete POST");
+  const [category, categoryGames] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Game.find({ category: req.params.id }, "title description").sort({ title: 1 }).exec(),
+  ]);
+
+  if (categoryGames.length > 0) {
+    res.render("category_delete", {
+      title: "Delete Category",
+      category: category,
+      category_games: categoryGames,
+    });
+    return;
+  } else {
+    await Category.findByIdAndRemove(req.body.categoryid);
+    res.redirect("/catalog/categories");
+  }
 });
 
 // Display Category update form on GET

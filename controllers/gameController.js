@@ -184,6 +184,79 @@ exports.game_update_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle Game update on POST
-exports.game_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game update POST");
-});
+exports.game_update_post = [
+  (req, res, next) => {
+    if (!(req.body.category instanceof Array)) {
+      if (typeof req.body.category === "undefined") req.body.category = [];
+      else req.body.category = new Array(req.body.category);
+    }
+    next();
+  },
+
+  body("title", "Game title required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("description", "Description required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("category.*")
+    .escape(),
+  body("category", "Must choose at least one category")
+    .isArray({ min: 1 }),
+  body("price")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Price required")
+    .isCurrency({ allow_negatives: false })
+    .withMessage("Price must be a positive number")
+    .isCurrency({ require_decimal: true, digits_after_decimal: [2] })
+    .withMessage("Price must be formatted with 2 digits following a decimal; eg: 17.99, 16.00, 0.95, etc."),
+  body("quantity")
+    .trim()
+    .isInt({ min: 0 })
+    .escape()
+    .withMessage("Minimum quantity of 0")
+    .isInt({ max: 100 })
+    .withMessage("Maximum quantity of 100"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const game = new Game({
+      title: req.body.title,
+      description: req.body.description,
+      category: req.body.category,
+      price: req.body.price,
+      quantity: req.body.quantity,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      const allCategories = await Category.find({}, "name").exec();
+
+      for (const category of allCategories) {
+        if (game.category.includes(category._id)) {
+          category.checked = "true";
+        }
+      }
+
+      let formattedPrice = '';
+      if (game.price) formattedPrice = game.price.toString();
+
+      res.render("game_form", {
+        title: "Add Game",
+        categories: allCategories,
+        formatted_price: formattedPrice,
+        game: game,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const updatedGame = await Game.findByIdAndUpdate(req.params.id, game, {});
+      res.redirect(updatedGame.url);
+    }
+  }),
+];

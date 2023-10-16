@@ -133,7 +133,7 @@ exports.game_create_post = [
 
 // Display Game delete form on GET
 exports.game_delete_get = asyncHandler(async (req, res, next) => {
-  const game = await Game.findById(req.params.id).exec();
+  const game = await Game.findById(req.params.id).populate("category").exec();
 
   if (game === null) {
     res.redirect("/catalog/games");

@@ -82,12 +82,10 @@ exports.game_create_post = [
     .isLength({ min: 1 })
     .escape()
     .withMessage("Price required")
-    .isCurrency({ 
-      allow_negatives: false, 
-      require_decimal: true, 
-      digits_after_decimal: [2]
-    })
-    .withMessage("Price must be a positive number and contain 2 digits after the decimal; eg: 17.99, 16.00, etc."),
+    .isCurrency({ allow_negatives: false })
+    .withMessage("Price must be a positive number")
+    .isCurrency({ require_decimal: true, digits_after_decimal: [2] })
+    .withMessage("Price must be formatted with 2 digits following a decimal; eg: 17.99, 16.00, 0.95, etc."),
   body("quantity")
     .trim()
     .isInt({ min: 0 })

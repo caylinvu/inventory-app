@@ -85,9 +85,7 @@ exports.game_create_post = [
     .isCurrency({ 
       allow_negatives: false, 
       require_decimal: true, 
-      digits_after_decimal: [2], 
-      require_symbol: false, 
-      symbol_after_digits: false 
+      digits_after_decimal: [2]
     })
     .withMessage("Price must be a positive number and contain 2 digits after the decimal; eg: 17.99, 16.00, etc."),
   body("quantity")
@@ -117,9 +115,14 @@ exports.game_create_post = [
           category.checked = "true";
         }
       }
+
+      let formattedPrice = '';
+      if (game.price) formattedPrice = game.price.toString();
+
       res.render("game_form", {
         title: "Add Game",
         categories: allCategories,
+        formatted_price: formattedPrice,
         game: game,
         errors: errors.array(),
       });

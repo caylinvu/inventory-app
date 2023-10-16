@@ -20,7 +20,7 @@ block content
             label(for=category._id) #{category.name}
     div.form-group
       label(for='price') Price: 
-      input#price.form-control(type='number' placeholder='eg: 17.99, 16.00, 0.95, etc.' step='any' name='price' value=(game===undefined ? '' : game.price.toString()))
+      input#price.form-control(type='number' placeholder='eg: 17.99, 16.00, 0.95, etc.' step='any' name='price' value=(game===undefined ? '' : formatted_price))
     div.form-group
       label(for='quantity') Quantity: 
       input#quantity.form-control(type='number' placeholder='0 - 100' name='quantity' value=(game===undefined ? '' : game.quantity))

@@ -12,3 +12,9 @@ block content
         |, 
   p #[strong Price:] $#{game.price}
   p #[strong Quantity:] #{game.quantity}
+
+  hr
+  p
+    a(href=game.url+'/update') Update game
+  p
+    a(href=game.url+'/delete') Delete game

@@ -79,7 +79,20 @@ exports.category_create_post = [
 
 // Display Category delete form on GET
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Category delete GET");
+  const [category, categoryGames] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Game.find({ category: req.params.id }, "title description").sort({ title: 1 }).exec(),
+  ]);
+
+  if (category === null) {
+    res.redirect("/catalog/categories");
+  }
+
+  res.render("category_delete", {
+    title: "Delete Category",
+    category: category,
+    category_games: categoryGames,
+  });
 });
 
 // Handle Category delete on POST

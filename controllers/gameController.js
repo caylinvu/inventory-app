@@ -153,7 +153,34 @@ exports.game_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display Game update form on GET
 exports.game_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game update GET");
+  const [game, allCategories] = await Promise.all([
+    Game.findById(req.params.id).populate("category").exec(),
+    Category.find({}, "name").exec(),
+  ]);
+
+  if (game === null) {
+    const err = new Error("Game not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  for (const category of allCategories) {
+    for (const game_c of game.category) {
+      if (category._id.toString() === game_c._id.toString()) {
+        category.checked = "true";
+      }
+    }
+  }
+
+  let formattedPrice = '';
+  if (game.price) formattedPrice = game.price.toString();
+
+  res.render("game_form", {
+    title: "Update Game",
+    formatted_price: formattedPrice,
+    game: game,
+    categories: allCategories,
+  });
 });
 
 // Handle Game update on POST

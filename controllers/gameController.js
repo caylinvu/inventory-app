@@ -85,13 +85,18 @@ exports.game_create_post = [
     .isCurrency({ 
       allow_negatives: false, 
       require_decimal: true, 
-      digits_after_decimal: 2, 
+      digits_after_decimal: [2], 
       require_symbol: false, 
       symbol_after_digits: false 
     })
     .withMessage("Price must be a positive number and contain 2 digits after the decimal; eg: 17.99, 16.00, etc."),
   body("quantity")
-    .escape(),
+    .trim()
+    .isInt({ min: 0 })
+    .escape()
+    .withMessage("Minimum quantity of 0")
+    .isInt({ max: 100 })
+    .withMessage("Maximum quantity of 100"),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);

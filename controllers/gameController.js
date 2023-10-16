@@ -133,7 +133,16 @@ exports.game_create_post = [
 
 // Display Game delete form on GET
 exports.game_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game delete GET");
+  const game = await Game.findById(req.params.id).exec();
+
+  if (game === null) {
+    res.redirect("/catalog/games");
+  }
+
+  res.render("game_delete", {
+    title: "Delete Game",
+    game: game,
+  });
 });
 
 // Handle Game delete on POST

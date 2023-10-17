@@ -157,6 +157,12 @@ exports.game_delete_get = asyncHandler(async (req, res, next) => {
 
 // Handle Game delete on POST
 exports.game_delete_post = asyncHandler(async (req, res, next) => {
+  const game = await Game.findById(req.body.gameid).exec();
+  if (game.image) {
+    fs.unlink('public/uploads/'+game.image, (err) => {
+      if (err) console.log(err);
+    });
+  }
   await Game.findByIdAndRemove(req.body.gameid);
   res.redirect("/catalog/games");
 });
@@ -260,6 +266,13 @@ exports.game_update_post = [
       let formattedPrice = '';
       if (game.price) formattedPrice = game.price.toString();
 
+      if (req.file) {
+        game.image = lastGame.image;
+        fs.unlink(req.file.path, (err) => {
+          if (err) console.log(err);
+        });
+      }
+
       res.render("game_form", {
         title: "Update Game",
         categories: allCategories,
@@ -270,6 +283,11 @@ exports.game_update_post = [
       });
       return;
     } else {
+      if (req.file) {
+        fs.unlink('public/uploads/'+lastGame.image, (err) => {
+          if (err) console.log(err);
+        });
+      }
       const updatedGame = await Game.findByIdAndUpdate(req.params.id, game, {});
       res.redirect(updatedGame.url);
     }

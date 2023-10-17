@@ -2,6 +2,7 @@ const Game = require("../models/game");
 const Category = require("../models/category");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const fs = require("fs");
 
 // Display home page
 exports.index = asyncHandler(async (req, res, next) => {
@@ -117,6 +118,13 @@ exports.game_create_post = [
 
       let formattedPrice = '';
       if (game.price) formattedPrice = game.price.toString();
+
+      if (req.file) {
+        game.image = '';
+        fs.unlink(req.file.path, (err) => {
+          if (err) console.log(err);
+        });
+      }
 
       res.render("game_form", {
         title: "Add Game",

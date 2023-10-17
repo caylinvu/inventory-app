@@ -1,23 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-// const upload = multer({ dest: "./public/uploads/" });
+const upload = require("../middleware/upload");
 
 // Require controller modules
 const game_controller = require("../controllers/gameController");
 const category_controller = require("../controllers/categoryController");
-
-// Multer setup
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './public/uploads');
-  },
-  filename: function(req, file, cb) {
-    cb(null, file.originalname);
-  }
-});
-
-const upload = multer({ storage: storage });
 
 /// GAME ROUTES ///
 

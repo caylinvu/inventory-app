@@ -1,9 +1,23 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+// const upload = multer({ dest: "./public/uploads/" });
 
 // Require controller modules
 const game_controller = require("../controllers/gameController");
 const category_controller = require("../controllers/categoryController");
+
+// Multer setup
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './public/uploads');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 
 /// GAME ROUTES ///
 
@@ -14,7 +28,7 @@ router.get("/", game_controller.index);
 router.get("/game/create", game_controller.game_create_get);
 
 // POST request for creating Game
-router.post("/game/create", game_controller.game_create_post);
+router.post("/game/create", upload.single('image'), game_controller.game_create_post);
 
 // GET request to delete Game
 router.get("/game/:id/delete", game_controller.game_delete_get);
@@ -26,7 +40,7 @@ router.post("/game/:id/delete", game_controller.game_delete_post);
 router.get("/game/:id/update", game_controller.game_update_get);
 
 // POST request to update Game
-router.post("/game/:id/update", game_controller.game_update_post);
+router.post("/game/:id/update", upload.single('image'), game_controller.game_update_post);
 
 // GET request for one Game
 router.get("/game/:id", game_controller.game_detail);

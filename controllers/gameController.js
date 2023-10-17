@@ -103,6 +103,7 @@ exports.game_create_post = [
       category: req.body.category,
       price: req.body.price,
       quantity: req.body.quantity,
+      image: (req.file ? req.file.filename : ''),
     });
 
     if (!errors.isEmpty()) {
@@ -123,6 +124,7 @@ exports.game_create_post = [
         formatted_price: formattedPrice,
         game: game,
         errors: errors.array(),
+        update_txt: "*If photo was previously selected, please select again",
       });
     } else {
       await game.save();
@@ -180,6 +182,7 @@ exports.game_update_get = asyncHandler(async (req, res, next) => {
     formatted_price: formattedPrice,
     game: game,
     categories: allCategories,
+    update_txt: "*If no file is chosen, the previous photo will remain",
   });
 });
 
@@ -225,12 +228,15 @@ exports.game_update_post = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
+    const lastGame = await Game.findById(req.params.id).exec();
+
     const game = new Game({
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
       price: req.body.price,
       quantity: req.body.quantity,
+      image: (req.file ? req.file.filename : lastGame.image),
       _id: req.params.id,
     });
 
@@ -247,11 +253,12 @@ exports.game_update_post = [
       if (game.price) formattedPrice = game.price.toString();
 
       res.render("game_form", {
-        title: "Add Game",
+        title: "Update Game",
         categories: allCategories,
         formatted_price: formattedPrice,
         game: game,
         errors: errors.array(),
+        update_txt: "*If no file is chosen, the previous photo will remain",
       });
       return;
     } else {

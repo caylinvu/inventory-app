@@ -3,7 +3,8 @@ extends layout
 block content 
 
   h1 #{game.title}
-
+  if game.image
+    img(src='/uploads/'+game.image style='width:100px;height:100px')
   p #{game.description}
   p #[strong Category:] 
     each category, index in game.category 

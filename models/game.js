@@ -8,6 +8,7 @@ const GameSchema = new Schema({
   category: [{type: Schema.Types.ObjectId, ref: 'Category'}],
   price: {type: Schema.Types.Decimal128, required: true},
   quantity: {type: Number, required: true},
+  image: {type: String, data: Buffer},
 });
 
 GameSchema.virtual('url').get(function() {
@@ -15,3 +16,11 @@ GameSchema.virtual('url').get(function() {
 });
 
 module.exports = mongoose.model('Game', GameSchema);
+
+// add ability to add image
+
+// CREATE IMAGE SCHEMA THAT HAS AN ID AND REFERENCE ON GAME SCHEMA
+// CREATE A HIDDEN INPUT THAT REFERENCES THE ID
+// ADD BUTTON TO REMOVE FILE
+
+// validate image with custom express validator

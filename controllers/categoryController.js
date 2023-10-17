@@ -153,7 +153,7 @@ exports.category_update_post = [
 
     if (!errors.isEmpty()) {
       res.render("category_form", {
-        title: "Add Category",
+        title: "Update Category",
         category: category,
         errors: errors.array(),
       });

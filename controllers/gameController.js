@@ -1,7 +1,7 @@
 const Game = require("../models/game");
 const Category = require("../models/category");
 const asyncHandler = require("express-async-handler");
-const { body, validationResult } = require("express-validator");
+const { body, validationResult, check } = require("express-validator");
 const fs = require("fs");
 
 // Display home page
@@ -94,6 +94,32 @@ exports.game_create_post = [
     .withMessage("Minimum quantity of 0")
     .isInt({ max: 100 })
     .withMessage("Maximum quantity of 100"),
+  check("image")
+    .custom((value, {req}) => {
+      if (!req.file) {
+        return true;
+      } else if (req.file.mimetype === "image/png") {
+        return ".png";
+      } else if (req.file.mimetype === "image/jpg") {
+        return ".jpg";
+      } else if (req.file.mimetype === "image/jpeg") {
+        return ".jpeg";
+      } else {
+        return false;
+      }
+    })
+    .withMessage("Only png, jpg, and jpeg files allowed"),
+  check("image")
+    .custom((value, {req}) => {
+      if (!req.file) {
+        return true;
+      } else if (req.file.size < 1024 * 1024 * 2) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+    .withMessage("Max file size of 2MB exceeded"),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -238,6 +264,32 @@ exports.game_update_post = [
     .withMessage("Minimum quantity of 0")
     .isInt({ max: 100 })
     .withMessage("Maximum quantity of 100"),
+  check("image")
+    .custom((value, {req}) => {
+      if (!req.file) {
+        return true;
+      } else if (req.file.mimetype === "image/png") {
+        return ".png";
+      } else if (req.file.mimetype === "image/jpg") {
+        return ".jpg";
+      } else if (req.file.mimetype === "image/jpeg") {
+        return ".jpeg";
+      } else {
+        return false;
+      }
+    })
+    .withMessage("Only png, jpg, and jpeg files allowed"),
+  check("image")
+    .custom((value, {req}) => {
+      if (!req.file) {
+        return true;
+      } else if (req.file.size < 1024 * 1024 * 2) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+    .withMessage("Max file size of 2MB exceeded"),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);

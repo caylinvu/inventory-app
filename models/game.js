@@ -18,4 +18,3 @@ GameSchema.virtual('url').get(function() {
 module.exports = mongoose.model('Game', GameSchema);
 
 // add custom validator for image type?? (express)
-// fix update image

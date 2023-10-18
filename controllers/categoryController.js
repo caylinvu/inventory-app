@@ -108,8 +108,17 @@ exports.category_delete_post = asyncHandler(async (req, res, next) => {
     });
     return;
   } else {
-    await Category.findByIdAndRemove(req.body.categoryid);
-    res.redirect("/catalog/categories");
+    if (req.body.password === process.env.admin_password) {
+      await Category.findByIdAndRemove(req.body.categoryid);
+      res.redirect("/catalog/categories");
+    } else {
+      res.render("category_delete", {
+        title: "Delete Category",
+        category: category,
+        category_games: categoryGames,
+        fail_txt: "*Incorrect password entered, please try again"
+      });
+    }
   }
 });
 

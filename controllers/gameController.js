@@ -177,14 +177,22 @@ exports.game_delete_get = asyncHandler(async (req, res, next) => {
 
 // Handle Game delete on POST
 exports.game_delete_post = asyncHandler(async (req, res, next) => {
-  const game = await Game.findById(req.body.gameid).exec();
-  if (game.image) {
-    fs.unlink('public/uploads/'+game.image, (err) => {
-      if (err) console.log(err);
+  const game = await Game.findById(req.body.gameid).populate("category").exec();
+  if (req.body.password === process.env.admin_password) {
+    if (game.image) {
+      fs.unlink('public/uploads/'+game.image, (err) => {
+        if (err) console.log(err);
+      });
+    }
+    await Game.findByIdAndRemove(req.body.gameid);
+    res.redirect("/catalog/games");
+  } else {
+    res.render("game_delete", {
+      title: "Delete Game",
+      game: game,
+      fail_txt: "*Incorrect password entered, please try again"
     });
   }
-  await Game.findByIdAndRemove(req.body.gameid);
-  res.redirect("/catalog/games");
 });
 
 // Display Game update form on GET

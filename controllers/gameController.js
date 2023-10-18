@@ -225,6 +225,7 @@ exports.game_update_get = asyncHandler(async (req, res, next) => {
     game: game,
     categories: allCategories,
     update_txt: "*If no file is chosen, the previous photo will remain",
+    password_required: true,
   });
 });
 
@@ -302,7 +303,7 @@ exports.game_update_post = [
       _id: req.params.id,
     });
 
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty() || req.body.password != process.env.admin_password) {
       const allCategories = await Category.find({}, "name").exec();
 
       for (const category of allCategories) {
@@ -328,6 +329,8 @@ exports.game_update_post = [
         game: game,
         errors: errors.array(),
         update_txt: "*If no file is chosen, the previous photo will remain",
+        password_required: true,
+        fail_txt: (req.body.password != process.env.admin_password ? "*Incorrect password entered, please try again" : ""),
       });
       return;
     } else {

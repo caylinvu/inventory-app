@@ -157,7 +157,7 @@ exports.category_update_post = [
       _id: req.params.id,
     });
 
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty() || req.body.password != process.env.admin_password) {
       res.render("category_form", {
         title: "Update Category",
         category: category,
@@ -167,24 +167,15 @@ exports.category_update_post = [
       });
       return;
     } else {
-      if (req.body.password === process.env.admin_password) {
-        const categoryExists = await Category.findOne({ name: req.body.name })
-          .collation({ locale: "en", strength: 2 })
-          .exec();
-        if (categoryExists) {
-          res.redirect(categoryExists.url);
-        } else {
-          const updatedCategory = await Category.findByIdAndUpdate(req.params.id, category, {});
-          res.redirect(updatedCategory.url);
-        }
+      const categoryExists = await Category.findOne({ name: req.body.name })
+        .collation({ locale: "en", strength: 2 })
+        .exec();
+      if (categoryExists) {
+        res.redirect(categoryExists.url);
       } else {
-        res.render("category_form", {
-          title: "Update Category",
-          category: category,
-          password_required: true,
-          fail_txt: "*Incorrect password entered, please try again",
-        });
-      }
+        const updatedCategory = await Category.findByIdAndUpdate(req.params.id, category, {});
+        res.redirect(updatedCategory.url);
+      } 
     }
   }),
 ];

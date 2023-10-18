@@ -40,12 +40,13 @@ async function categoryCreate(index, name, description) {
   console.log(`Added category: ${name}`);
 }
 
-async function gameCreate(index, title, description, category, price, quantity) {
+async function gameCreate(index, title, description, category, price, quantity, image) {
   const gamedetail = {
     title: title,
     description: description,
     price: price,
     quantity: quantity,
+    image: image,
   };
   if (category != false) gamedetail.category = category;
 
@@ -80,56 +81,64 @@ async function createGames() {
       "Discover the original co-op shooter-looter, crammed with new enhancements! As one of 4 trigger-happy mercenaries with RPG progression, equip bazillions of guns to take on the desert planet Pandora.",
       [categories[1], categories[2], categories[3]],
       29.99,
-      4
+      4,
+      "img-2023-10-17T22:44:07.747Zborderlands.jpg"
     ),
     gameCreate(1,
       "Hades",
       "Defy the god of the dead as you hack and slash out of the Underworld in this rogue-like dungeon crawler from the creators of Bastion, Transistor, and Pyre.",
       [categories[0], categories[4], categories[5]],
       24.99,
-      9
+      9,
+      "img-2023-10-17T22:44:49.004Zhades.jpg"
     ),
     gameCreate(2,
       "Mass Effect Legendary Edition",
       "The Mass Effect™ Legendary Edition includes single-player base content and over 40 DLC from the highly acclaimed Mass Effect, Mass Effect 2, and Mass Effect 3 games, including promo weapons, armors, and packs — remastered and optimized for 4K Ultra HD.",
       [categories[0], categories[1], categories[3]],
       59.99,
-      2
+      2,
+      "img-2023-10-17T22:45:14.555Zmasseffect.jpg"
     ),
     gameCreate(3,
       "Baldur's Gate 3",
       "Baldur’s Gate 3 is a story-rich, party-based RPG set in the universe of Dungeons & Dragons, where your choices shape a tale of fellowship and betrayal, survival and sacrifice, and the lure of absolute power.",
       [categories[1], categories[6], categories[7]],
       59.99,
-      3
+      3,
+      "img-2023-10-17T22:42:07.039Zbaldursgate.jpg"
     ),
     gameCreate(4,
       "DAVE THE DIVER",
       "DAVE THE DIVER is a casual, singleplayer adventure RPG featuring deep-sea exploration and fishing during the day and sushi restaurant management at night. Join Dave and his quirky friends as they seek to uncover the secrets of the mysterious Blue Hole.",
       [categories[8], categories[4], categories[1]],
       19.99,
-      4
+      4,
+      "img-2023-10-17T22:44:27.802Zdavethediver.jpg"
     ),
     gameCreate(5,
       "Moonlighter",
       "Moonlighter is an Action RPG with rogue-lite elements that demonstrates two sides of the coin – revealing everyday routines of Will, an adventurous shopkeeper that secretly dreams of becoming a hero.",
       [categories[0], categories[4], categories[5]],
       19.99,
-      8  
+      8,
+      "img-2023-10-17T22:45:29.654Zmoonlighter.jpg"
     ),
     gameCreate(6,
       "ARK: Survival Evolved",
       "Stranded on the shores of a mysterious island, you must learn to survive. Use your cunning to kill or tame the primeval creatures roaming the land, and encounter other players to survive, dominate... and escape!",
       [categories[1], categories[10], categories[2]],
       14.99,
-      12
+      12,
+      "img-2023-10-17T22:41:10.281Zark.jpg"
     ),
     gameCreate(7,
       "The Elder Scrolls V: Skyrim Special Edition",
       "Winner of more than 200 Game of the Year Awards, Skyrim Special Edition brings the epic fantasy to life in stunning detail. The Special Edition includes the critically acclaimed game and add-ons with all-new features like remastered art and effects, volumetric god rays, dynamic depth of field, screen-space reflections, and more.",
       [categories[1], categories[9], categories[6]],
       39.99,
-      5
+      5,
+      "img-2023-10-17T22:45:42.359Zskyrim.jpg"
     ),
   ]);
 }

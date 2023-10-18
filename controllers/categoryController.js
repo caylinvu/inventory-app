@@ -41,12 +41,10 @@ exports.category_create_get = (req, res, next) => {
 exports.category_create_post = [
   body("name", "Category name required")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
+    .isLength({ min: 1 }),
   body("description", "Description required")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
+    .isLength({ min: 1 }),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -135,12 +133,10 @@ exports.category_update_get = asyncHandler(async (req, res, next) => {
 exports.category_update_post = [
   body("name", "Category name required")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
+    .isLength({ min: 1 }),
   body("description", "Description required")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
+    .isLength({ min: 1 }),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);

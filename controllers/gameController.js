@@ -68,20 +68,15 @@ exports.game_create_post = [
 
   body("title", "Game title required")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
+    .isLength({ min: 1 }),
   body("description", "Description required")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
-  body("category.*")
-    .escape(),
+    .isLength({ min: 1 }),
   body("category", "Must choose at least one category")
     .isArray({ min: 1 }),
   body("price")
     .trim()
     .isLength({ min: 1 })
-    .escape()
     .withMessage("Price required")
     .isCurrency({ allow_negatives: false })
     .withMessage("Price must be a positive number")
@@ -90,7 +85,6 @@ exports.game_create_post = [
   body("quantity")
     .trim()
     .isInt({ min: 0 })
-    .escape()
     .withMessage("Minimum quantity of 0")
     .isInt({ max: 100 })
     .withMessage("Maximum quantity of 100"),
@@ -238,20 +232,15 @@ exports.game_update_post = [
 
   body("title", "Game title required")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
+    .isLength({ min: 1 }),
   body("description", "Description required")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
-  body("category.*")
-    .escape(),
+    .isLength({ min: 1 }),
   body("category", "Must choose at least one category")
     .isArray({ min: 1 }),
   body("price")
     .trim()
     .isLength({ min: 1 })
-    .escape()
     .withMessage("Price required")
     .isCurrency({ allow_negatives: false })
     .withMessage("Price must be a positive number")
@@ -260,7 +249,6 @@ exports.game_update_post = [
   body("quantity")
     .trim()
     .isInt({ min: 0 })
-    .escape()
     .withMessage("Minimum quantity of 0")
     .isInt({ max: 100 })
     .withMessage("Maximum quantity of 100"),

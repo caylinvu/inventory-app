@@ -11,7 +11,14 @@ block content
     div.form-group
       label(for='description') Description: 
       textarea#description.form-control(placeholder='Description' name='description') #{category===undefined ? '' : category.description}
+    if (password_required)
+      div.form-group
+        p Please enter admin password to continue with category update: 
+        input#password.form-control(type='password' name='password' required='true')
     button.btn.btn-primary(type='submit') Submit 
+  
+  if fail_txt
+    p= fail_txt
 
   if errors 
     ul 

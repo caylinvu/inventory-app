@@ -7,13 +7,30 @@ require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const catalogRouter = require('./routes/catalog');
+const compression = require('compression');
+const helmet = require('helmet');
 
 const app = express();
+
+const RateLimit = require("express-rate-limit");
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 20,
+});
+app.use(limiter);
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  }),
+);
 
 // set up mongoose connection
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
-const mongoDB = process.env.dev_db_url;
+const mongoDB = process.env.MONGODB_URI || process.env.dev_db_url;
 
 main().catch((err) => console.log(err));
 async function main() {
@@ -28,6 +45,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
